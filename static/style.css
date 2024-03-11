@@ -24,7 +24,7 @@ ol {
     grid-template-columns: repeat(auto-fill, minmax(calc(50% - var(--items-gap)), 1fr));
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
     ol {
         grid-template-columns: repeat(auto-fill, minmax(calc(25% - var(--items-gap) * 3), 1fr));
     }
@@ -41,6 +41,11 @@ ol {
     font-size: 18px;
     color: #FFFFFF;
     margin-bottom: 0.5rem;
+    text-transform: lowercase;
+}
+
+.card h2:first-letter {
+    text-transform: capitalize;
 }
 
 .card p {
@@ -70,4 +75,9 @@ input[type="text"]::placeholder {
 input[type="text"]:focus {
     outline: none;
     border: 1px solid #555;
+}
+
+.algolia-logo {
+    width: 20px;
+    vertical-align: bottom;
 }

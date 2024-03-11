@@ -1,2 +1,3 @@
 venv
 /static/*.min.js
+.env

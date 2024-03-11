@@ -1,8 +1,15 @@
+import os
+
+from algoliasearch.search_client import SearchClient
+from dotenv import load_dotenv
 from fastapi import FastAPI, Query
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -12,17 +19,17 @@ app.mount(
     name="static",
 )
 
+
 templates = Jinja2Templates(directory="templates")
 
-ITEMS = [
-    {"title": "Hello world", "description": "sample"},
-    {"title": "hello 2", "description": "sample"},
-    {"title": "hello 2", "description": "sample"},
-    {"title": "hello 2", "description": "sample"},
-    {"title": "hello 2", "description": "sample"},
-    {"title": "hello 2", "description": "sample"},
-    {"title": "Sample item", "description": "sample"},
-]
+
+ALGOLIA_APP_ID = os.environ["ALGOLIA_APP_ID"]
+ALGOLIA_API_KEY = os.environ["ALGOLIA_API_KEY"]
+
+algolia_client = SearchClient.create(
+    ALGOLIA_APP_ID,
+    ALGOLIA_API_KEY,
+)
 
 
 @app.get(
@@ -64,8 +71,12 @@ async def get_items_html(
 
 
 def get_items(search_query: str):
-    return [
-        item  # fmt: skip
-        for item in ITEMS
-        if search_query == "" or search_query in item["title"]
-    ]
+    index = algolia_client.init_index("zara_products")
+    results = index.search(
+        search_query,
+        {
+            "page": 1,
+            "hitsPerPage": 12,
+        },
+    )
+    return results["hits"]
