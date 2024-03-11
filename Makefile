@@ -1,5 +1,5 @@
 dev:
-	uvicorn app:app --host "0.0.0.0" --reload
+	uvicorn --host "0.0.0.0" --reload text_search_app.app:app
 
 install:
 	pip install -r requirements.txt

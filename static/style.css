@@ -53,6 +53,12 @@ ol {
     color: #B0B0B0;
 }
 
+.price {
+    font-size: 15px;
+    color: #bebebe;
+    font-weight: bold;
+}
+
 
 form {
     margin-bottom: 1rem;
@@ -79,5 +85,10 @@ input[type="text"]:focus {
 
 .algolia-logo {
     width: 20px;
-    vertical-align: bottom;
+    vertical-align: baseline;
+}
+
+label {
+    color: #E0E0E0;
+    margin-right: 10px;
 }

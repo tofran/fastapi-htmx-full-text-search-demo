@@ -3,7 +3,11 @@
         {% for item in items %}
             <li class="card">
                 <h2>{{ item.name }}</h2>
-                <p>{{ item.description }}</p>
+                <p>
+                    <span class="price">${{ item.price }}</span>
+                    &bull;
+                    {{ item.description }}
+                </p>
             </li>
         {% endfor %}
     </ol>

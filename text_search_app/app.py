@@ -1,15 +1,13 @@
-import os
+from typing import Literal
 
-from algoliasearch.search_client import SearchClient
-from dotenv import load_dotenv
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Response
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from text_search_app.algolia_search import get_items
 
-load_dotenv()
 
 app = FastAPI()
 
@@ -23,18 +21,10 @@ app.mount(
 templates = Jinja2Templates(directory="templates")
 
 
-ALGOLIA_APP_ID = os.environ["ALGOLIA_APP_ID"]
-ALGOLIA_API_KEY = os.environ["ALGOLIA_API_KEY"]
-
-algolia_client = SearchClient.create(
-    ALGOLIA_APP_ID,
-    ALGOLIA_API_KEY,
-)
-
-
 @app.get(
     "/",
     response_class=HTMLResponse,
+    tags=["Search"],
 )
 async def get_index_html(
     request: Request,
@@ -54,6 +44,7 @@ async def get_index_html(
 @app.get(
     "/html-api/items",
     response_class=HTMLResponse,
+    tags=["HTML API"],
 )
 async def get_items_html(
     request: Request,
@@ -70,13 +61,24 @@ async def get_items_html(
     )
 
 
-def get_items(search_query: str):
-    index = algolia_client.init_index("zara_products")
-    results = index.search(
-        search_query,
-        {
-            "page": 1,
-            "hitsPerPage": 12,
-        },
+@app.get(
+    "/healthz",
+    response_model=Literal["OK"],
+    tags=["Others"],
+)
+async def health_check():
+    return Response(
+        "OK",
+        media_type="text/plain",
     )
-    return results["hits"]
+
+
+@app.get(
+    "/robots.txt",
+    tags=["Others"],
+)
+async def get_robots_txt():
+    return Response(
+        "User-agent: *\nDisallow: /html-api",
+        media_type="text/plain",
+    )
