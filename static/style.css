@@ -1,0 +1,73 @@
+:root {
+    --padding-body: 0.5rem;
+    --border-radius: 5px;
+    --items-gap: 12px;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #E0E0E0;
+    background-color: #121212;
+    padding: var(--padding-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+ol {
+    padding: 0;
+    display: grid;
+    gap: var(--items-gap);
+    grid-template-columns: repeat(auto-fill, minmax(calc(50% - var(--items-gap)), 1fr));
+}
+
+@media (min-width: 600px) {
+    ol {
+        grid-template-columns: repeat(auto-fill, minmax(calc(25% - var(--items-gap) * 3), 1fr));
+    }
+}
+
+.card {
+    background-color: #1E1E1E;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    display: inline-block;
+}
+
+.card h2 {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    font-size: 14px;
+    color: #B0B0B0;
+}
+
+
+form {
+    margin-bottom: 1rem;
+}
+
+input[type="text"] {
+    background-color: #333;
+    color: #E0E0E0;
+    border: none;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    min-width: min(20rem, calc(100% - var(--padding-body)));
+    border: 1px solid transparent;
+}
+
+input[type="text"]::placeholder {
+    color: #A0A0A0;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border: 1px solid #555;
+}

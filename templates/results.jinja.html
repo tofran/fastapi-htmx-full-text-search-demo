@@ -1,0 +1,12 @@
+{% if items %}
+    <ol>
+        {% for item in items %}
+            <li class="card">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+            </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
