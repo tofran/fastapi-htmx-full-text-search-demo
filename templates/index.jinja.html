@@ -1,41 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.jinja.html" %}
 
-    <title>Text search example</title>
+{% block content %}
 
-    <script src="/static/htmx.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
-</head>
-
-<body>
     <h1>Text search example</h1>
 
     <form
         hx-get="/html-api/items"
         hx-params="search_query"
         hx-target="#search-results-container"
-        hx-trigger="keyup delay:100ms"
-    >
+        hx-trigger="keyup delay:800ms"
+        >
         <input type="text" name="search_query" placeholder="Search...">
+
+        <!-- TODO: add more search providers -->
+        <!-- <label for="index">Search with:</label>
+        <select id="index" name="index">
+            <option value="algolia">Algolia</option>
+            <option value="sqlite">SQLite</option>
+        </select> -->
     </form>
+
 
     <div id="search-results-container">
         {% include "results.jinja.html" %}
     </div>
-</body>
 
-<footer>
-    <p>
-        <img src="/static/algolia-logo.svg" class="algolia-logo" />
-        Search results powered by Algolia.
-    </p>
-    
-    <p>
-        Built by tofran
-    </p>
-</footer>
-
-</html>
+{% endblock content %}

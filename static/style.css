@@ -92,3 +92,32 @@ label {
     color: #E0E0E0;
     margin-right: 10px;
 }
+
+select {
+    background-color: #333;
+    color: #E0E0E0;
+    border: none;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    min-width: min(20rem, calc(100% - var(--padding-body)));
+    border: 1px solid transparent;
+}
+
+select:focus {
+    outline: none;
+    border: 1px solid #555;
+}
+
+a {
+    color: #E0E0E0;
+}
+
+a:hover {
+    color: #A0A0A0;
+}
+
+a:visited {
+    color: #808080;
+}
+
+

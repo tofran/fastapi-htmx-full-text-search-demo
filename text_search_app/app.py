@@ -4,12 +4,22 @@ from fastapi import FastAPI, Query, Response
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from text_search_app import html_api_router
 from text_search_app.algolia_search import get_items
+from text_search_app.config import DEVELOPMENT_MODE
+from text_search_app.templates import make_template_response
+
+app = FastAPI(
+    title="Search sample",
+    debug=DEVELOPMENT_MODE,
+    openapi_url="/openapi.json" if DEVELOPMENT_MODE else None,
+)
 
 
-app = FastAPI()
+app.include_router(html_api_router.router)
+
 
 app.mount(
     path="/static",
@@ -18,46 +28,14 @@ app.mount(
 )
 
 
-templates = Jinja2Templates(directory="templates")
-
-
-@app.get(
-    "/",
-    response_class=HTMLResponse,
-    tags=["Search"],
-)
-async def get_index_html(
+@app.exception_handler(StarletteHTTPException)
+async def not_found_exception_handler(
     request: Request,
-    search_query: str = Query(
-        default="",
-    ),
+    exception: BaseException,
 ):
-    return templates.TemplateResponse(
-        "index.jinja.html",
-        {
-            "request": request,
-            "items": get_items(search_query),
-        },
-    )
-
-
-@app.get(
-    "/html-api/items",
-    response_class=HTMLResponse,
-    tags=["HTML API"],
-)
-async def get_items_html(
-    request: Request,
-    search_query: str = Query(
-        default="",
-    ),
-):
-    return templates.TemplateResponse(
-        "results.jinja.html",
-        {
-            "request": request,
-            "items": get_items(search_query),
-        },
+    return make_template_response(
+        "404",
+        request,
     )
 
 
@@ -81,4 +59,24 @@ async def get_robots_txt():
     return Response(
         "User-agent: *\nDisallow: /html-api",
         media_type="text/plain",
+    )
+
+
+@app.get(
+    "/",
+    response_class=HTMLResponse,
+    tags=["Search"],
+)
+async def get_index_html(
+    request: Request,
+    search_query: str = Query(
+        default="",
+    ),
+):
+    return make_template_response(
+        "index",
+        request,
+        {
+            "items": get_items(search_query),
+        },
     )
