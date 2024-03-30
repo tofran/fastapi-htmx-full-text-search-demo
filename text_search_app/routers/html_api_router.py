@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, Request, status
 from fastapi.responses import HTMLResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from text_search_app.algolia_search import get_items
+from text_search_app.search_indexes.algolia import get_items
 from text_search_app.config import DEVELOPMENT_MODE
 from text_search_app.templates import make_template_response
 

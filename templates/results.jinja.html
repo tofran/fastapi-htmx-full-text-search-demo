@@ -1,4 +1,6 @@
-{% if items %}
+{% if items is none %}
+    Search index empty, please import content first.
+{% elif items %}
     <ol>
         {% for item in items %}
             <li class="card">
