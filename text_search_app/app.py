@@ -24,6 +24,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Python FastAPI HTMX full-text-search demo",
+    description="[Source code](https://github.com/tofran/fastapi-htmx-full-text-search-demo/)",
     debug=DEVELOPMENT_MODE,
     openapi_url="/openapi.json" if DEVELOPMENT_MODE else None,
     lifespan=lifespan,
