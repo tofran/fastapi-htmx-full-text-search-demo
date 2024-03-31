@@ -15,6 +15,7 @@ Server Side Rendering (SSR) declarative web framework with zero custom JS:
 ## Description and demo
 
 **[Live demo](https://full-text-search-demo.tofran.com/)**
+(the server goes to sleep, give at least 30s for a cold start)
 
 https://github.com/tofran/fastapi-htmx-full-text-search-demo/assets/5692603/43d642fd-52d5-4e5b-836a-6609d0c3d782
 
@@ -38,8 +39,9 @@ HTMX handles the rest, listens to DOM events and updates it when when necessary.
 ## Development
 
 - Create a `.env` file based on the `.env.template`.  
-  You will need an Algolia account, should be pretty simple to setup
-  (more info in their [Quick start guide](https://www.algolia.com/doc/guides/getting-started/quick-start/)).
+  You will need an Algolia account, more info in their
+  [Quick start guide](https://www.algolia.com/doc/guides/getting-started/quick-start/).  
+  More information about the env vars can be found in `./text_search_app/config.py`
 
 - Setup a local environment with `make setup-venv`,
   activate it with `source ./venv/bin/activate`
@@ -55,3 +57,18 @@ For deployment one would use the `./Dockerfile` and set the required environment
 
 For running locally a production like build, install the dependencies with `make install`
 and run the application with `make start`. That's it.
+
+## Uploading a dataset
+
+To keep this repository clean, no sample data is provided. 
+You can upload your own data via the `/index/upload-csv` endpoint.
+Information about the supported CSV columns available in the Swagger UI (`/docs`).
+
+Recommended datasets (adapt column names when needed):
+
+  - [Zara Products on Kaggle](https://www.kaggle.com/datasets/maparla/zara-products)
+  - [Amazon Products Dataset 2023 on Kaggle](https://www.kaggle.com/datasets/asaniczka/amazon-products-dataset-2023-1-4m-products/)
+
+## License 
+
+MIT
