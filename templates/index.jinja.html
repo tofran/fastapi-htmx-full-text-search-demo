@@ -6,20 +6,26 @@
 
     <form
         hx-get="/html-api/items"
-        hx-params="search_query"
+        hx-params="search_query, search_index"
         hx-target="#search-results-container"
-        hx-trigger="keyup delay:800ms"
+        hx-trigger="keyup delay:800ms from:input queue:last changed, change from:select queue:last"
+    >
+        <input
+            type="text"
+            name="search_query"
+            placeholder="Search..."
+        />
+
+        <label for="search-index-select">Search with:</label>
+        <select
+            id="search-index-select"
+            name="search_index"
+            hx-trigger="change"
         >
-        <input type="text" name="search_query" placeholder="Search...">
-
-        <!-- TODO: add more search providers -->
-        <!-- <label for="index">Search with:</label>
-        <select id="index" name="index">
-            <option value="algolia">Algolia</option>
-            <option value="sqlite">SQLite</option>
-        </select> -->
+            <option value="SQLITE">SQLite</option>
+            <option value="ALGOLIA">Algolia</option>
+        </select>
     </form>
-
 
     <div id="search-results-container">
         {% include "results.jinja.html" %}

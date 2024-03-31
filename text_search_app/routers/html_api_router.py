@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Query, Request, status
 from fastapi.responses import HTMLResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from text_search_app.search_indexes.algolia import get_items
 from text_search_app.config import DEVELOPMENT_MODE
+from text_search_app.search_indexes.indexes import SearchIndex, get_items
 from text_search_app.templates import make_template_response
 
 
@@ -21,7 +21,9 @@ async def prevent_html_api_direct_access(
         return
 
     # Simulate a 404 just for demonstration - I'm avoiding custom errors in this project
-    raise StarletteHTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    raise StarletteHTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+    )
 
 
 router = APIRouter(
@@ -37,14 +39,22 @@ router = APIRouter(
 )
 async def get_items_html(
     request: Request,
+    search_index: SearchIndex = Query(
+        default=SearchIndex.SQLITE,
+        description="The search index to use",
+    ),
     search_query: str = Query(
         default="",
+        description="The user query to find products that better match it",
     ),
 ):
     return make_template_response(
         "results",
         request,
         {
-            "items": get_items(search_query),
+            "items": get_items(
+                search_index=search_index,
+                search_query=search_query,
+            )
         },
     )
