@@ -8,11 +8,7 @@
         hx-get="/html-api/items"
         hx-params="search_query, search_index"
         hx-target="#search-results-container"
-        hx-trigger="
-            keyup delay:800ms from:input queue:last changed,
-            change from:select queue:last,
-            submit
-        "
+        hx-trigger="keyup delay:800ms from:input queue:last changed, change from:select queue:last, submit"
     >
         <input
             type="text"
