@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, field_validator
 
 
 class Product(BaseModel):
@@ -7,8 +7,8 @@ class Product(BaseModel):
     description: str
     price: float
     currency: str
-    terms: str
-    section: str
+    terms: str | None
+    section: str | None
 
     @field_validator("price", mode="before")
     def transform_str_to_float(
@@ -19,9 +19,3 @@ class Product(BaseModel):
             return float(value.replace(",", "."))
 
         return value
-
-
-class AlgoliaSearchResult(Product):
-    object_id: str = Field(
-        alias="objectId",
-    )

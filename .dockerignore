@@ -1,0 +1,6 @@
+**/__pycache__
+**/venv
+**/.*
+**/Dockerfile*
+LICENSE
+README.md
