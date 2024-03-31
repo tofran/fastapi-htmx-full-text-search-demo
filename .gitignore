@@ -1,4 +1,5 @@
 venv
 /static/*.min.js
 .env
+.env.*
 sqlite

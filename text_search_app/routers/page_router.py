@@ -1,8 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 
-from text_search_app.search_indexes import indexes
+from text_search_app.search_indexes.indexes import SearchIndex, get_items
 from text_search_app.templates import make_template_response
 
 router = APIRouter(
@@ -17,14 +17,31 @@ router = APIRouter(
 )
 async def get_index_html(
     request: Request,
-    # TODO: later one could add a search_query query params to preserve the user state
+    selected_search_index: SearchIndex = Query(
+        alias="search_index",
+        default=SearchIndex.SQLITE,
+        description="The search index to use",
+    ),
+    search_query: str = Query(
+        default="",
+        description="The user query to find products that better match it",
+    ),
 ):
     return make_template_response(
         "index",
         request,
         {
-            "items": indexes.get_items(
-                search_query=None,
+            "search_query": search_query,
+            "search_indexes": [
+                {
+                    "name": search_index.name,
+                    "is_selected": selected_search_index == search_index,
+                }
+                for search_index in SearchIndex
+            ],
+            "items": get_items(
+                search_index=selected_search_index,
+                search_query=search_query,
             ),
         },
     )

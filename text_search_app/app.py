@@ -5,7 +5,7 @@ from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from text_search_app.config import DEVELOPMENT_MODE
+from text_search_app.config import DEVELOPMENT_MODE, ENABLE_INDEX_MANAGEMENT
 from text_search_app.routers import (
     html_api_router,
     index_management_router,
@@ -32,7 +32,10 @@ app = FastAPI(
 
 app.include_router(page_router.router)
 app.include_router(html_api_router.router)
-app.include_router(index_management_router.router)
+
+if ENABLE_INDEX_MANAGEMENT:
+    app.include_router(index_management_router.router)
+
 app.include_router(misc_router.router)
 
 

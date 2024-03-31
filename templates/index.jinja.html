@@ -8,12 +8,17 @@
         hx-get="/html-api/items"
         hx-params="search_query, search_index"
         hx-target="#search-results-container"
-        hx-trigger="keyup delay:800ms from:input queue:last changed, change from:select queue:last"
+        hx-trigger="
+            keyup delay:800ms from:input queue:last changed,
+            change from:select queue:last,
+            submit
+        "
     >
         <input
             type="text"
             name="search_query"
             placeholder="Search..."
+            value="{{ search_query }}"
         />
 
         <label for="search-index-select">Search with:</label>
@@ -22,8 +27,14 @@
             name="search_index"
             hx-trigger="change"
         >
-            <option value="SQLITE">SQLite</option>
-            <option value="ALGOLIA">Algolia</option>
+            {% for index in search_indexes %}
+                <option
+                    value="{{ index.name }}"
+                    {% if index.is_selected %}selected{% endif %}
+                >
+                    {{ index.name }}
+                </option>
+            {% endfor %}
         </select>
     </form>
 
