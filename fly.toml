@@ -1,0 +1,31 @@
+app = 'full-text-search-demo'
+primary_region = 'mad'
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = 'suspend'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/healthz"
+    grace_period = "10s"
+    interval = "20s"
+    timeout = "5s"
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[deploy]
+  strategy = "bluegreen"
+
+[[statics]]
+  guest_path = "/app/static"
+  url_prefix = "/static"

@@ -7,22 +7,23 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt update && \
-    apt install -y make && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "10001" \
-    appuser
-
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    \
+    apt update && \
+    apt install -y make && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/* \
+    && \
+    adduser \
+        --disabled-password \
+        --gecos "" \
+        --home "/nonexistent" \
+        --shell "/sbin/nologin" \
+        --no-create-home \
+        --uid "10001" \
+        appuser \
+    && \
     python -m pip install -r requirements.txt
 
 USER appuser
